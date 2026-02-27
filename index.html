@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LocaServe - Local Service Finder</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(to right, #e3f2fd, #ffffff);
+  color: #333;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  background: white;
+  padding: 15px 50px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+nav h2 {
+  color: #1976d2;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav ul li {
+  cursor: pointer;
+}
+
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero h1 {
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.btn {
+  padding: 12px 25px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #125aa0;
+}
+
+.services {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.service-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  width: 250px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #1976d2;
+  color: white;
+  margin-top: 40px;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 300px;
+}
+
+.modal-content input, select {
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+}
+
+/* Chatbot */
+.chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #1976d2;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.chat-window {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 250px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  padding: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <h2>LocaServe</h2>
+  <ul>
+    <li>Home</li>
+    <li>Services</li>
+    <li>Contact</li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <h1>Find Trusted Local Services Near You</h1>
+  <p>Plumbers, Electricians, Carpenters and more at your doorstep.</p>
+  <button class="btn" onclick="scrollToServices()">Explore Services</button>
+</section>
+
+<section class="services" id="services">
+  <h2>Our Services</h2>
+
+  <div class="service-container">
+    <div class="card">
+      <h3>🔧 Plumber</h3>
+      <p>Professional plumbing services.</p>
+      <button class="btn" onclick="openModal('Plumber')">Book Now</button>
+    </div>
+
+    <div class="card">
+      <h3>⚡ Electrician</h3>
+      <p>Expert electrical solutions.</p>
+      <button class="btn" onclick="openModal('Electrician')">Book Now</button>
+    </div>
+
+    <div class="card">
+      <h3>🪚 Carpenter</h3>
+      <p>Quality woodwork services.</p>
+      <button class="btn" onclick="openModal('Carpenter')">Book Now</button>
+    </div>
+
+    <div class="card">
+      <h3>🎨 Painter</h3>
+      <p>Professional home painting.</p>
+      <button class="btn" onclick="openModal('Painter')">Book Now</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 LocaServe | Contact: support@locaserve.com
+</footer>
+
+<!-- Booking Modal -->
+<div class="modal" id="bookingModal">
+  <div class="modal-content">
+    <h3>Book Service</h3>
+    <input type="text" placeholder="Your Name" required />
+    <input type="text" placeholder="Phone Number" required />
+    <select id="serviceSelect">
+      <option>Plumber</option>
+      <option>Electrician</option>
+      <option>Carpenter</option>
+      <option>Painter</option>
+    </select>
+    <button class="btn" onclick="submitBooking()">Confirm Booking</button>
+    <button class="btn" style="background:gray;margin-top:10px;" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<!-- Chatbot Placeholder -->
+<div class="chat-button" onclick="toggleChat()">Chat with LocaBot</div>
+
+<div class="chat-window" id="chatWindow">
+  <p><strong>LocaBot</strong></p>
+  <p>Chatbot will be integrated here using IBM Watson Assistant.</p>
+</div>
+
+<script>
+function scrollToServices() {
+  document.getElementById("services").scrollIntoView({behavior: "smooth"});
+}
+
+function openModal(service) {
+  document.getElementById("bookingModal").style.display = "flex";
+  document.getElementById("serviceSelect").value = service;
+}
+
+function closeModal() {
+  document.getElementById("bookingModal").style.display = "none";
+}
+
+function submitBooking() {
+  alert("Booking Confirmed! Our professional will contact you soon.");
+  closeModal();
+}
+
+function toggleChat() {
+  const chat = document.getElementById("chatWindow");
+  chat.style.display = chat.style.display === "block" ? "none" : "block";
+}
+
+/*
+PASTE YOUR IBM WATSON ASSISTANT WEB CHAT SCRIPT HERE
+Example:
+<script>
+  window.watsonAssistantChatOptions = { ... }
+</script>
+*/
+</script>
+
+</body>
+</html>
